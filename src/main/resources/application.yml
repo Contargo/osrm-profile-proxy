@@ -1,0 +1,16 @@
+zuul:
+  routes:
+    home:
+      path: /osrm/**
+  removeSemicolonContent: false
+
+profiles:
+  limitInMeters: 75000
+  destinations:
+      underLimit: http://localhost:50001/mapsUnderLimit
+      overLimit: http://localhost:50001/mapsOverLimit
+      fallback: http://localhost:50001/mapsFallback
+
+spring:
+  profiles:
+    active: dev

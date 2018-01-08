@@ -1,0 +1,10 @@
+${AnsiColor.GREEN}
+ _________________________
+/\                        \  
+\_|                       |  
+  |  OSRM-profile-proxy   |  
+  |                       |  
+  |  _____________________|
+  \_/_____________________/
+
+${AnsiColor.BRIGHT_BLACK}based on Spring Boot version ${spring-boot.version} ${AnsiColor.WHITE}
