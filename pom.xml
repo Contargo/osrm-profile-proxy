@@ -11,7 +11,7 @@
 
     <groupId>net.contargo</groupId>
     <artifactId>osrm-profile-proxy</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>osrm-profile-proxy</name>
@@ -291,7 +291,9 @@
                         <version>0.5.1</version>
 
                         <configuration>
-                            <tagName>${project.artifactId}-${project.version}</tagName>
+                            <tagName>${project.version}</tagName>
+                            <releaseTitle>${project.artifactId}-${project.version}</releaseTitle>
+                            <serverId>github</serverId>
                         </configuration>
 
                         <executions>
