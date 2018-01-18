@@ -1,9 +1,21 @@
-
 sudo: false
+
 language: java
+
 jdk:
   - oraclejdk8
-script: ./mvnw verify -B
+
+script: ./mvnw --settings .travis/settings.xml clean verify
+
 cache:
   directories:
     - $HOME/.m2
+
+deploy:
+   provider: script
+   script: .travis/release.sh
+   skip_cleanup: true
+   on:
+    repo: Contargo/osrm-profile-proxy
+    tags: true
+    jdk: oraclejdk8

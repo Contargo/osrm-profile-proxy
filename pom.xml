@@ -24,6 +24,7 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -50,6 +51,16 @@
         <tag>HEAD</tag>
     </scm>
 
+    <distributionManagement>
+        <repository>
+            <id>contargo-oss</id>
+            <url>https://nexus.contargo.net/content/repositories/oss-releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>contargo-oss</id>
+            <url>https://nexus.contargo.net/content/repositories/oss-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <dependencies>
 
@@ -261,5 +272,40 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>bintray-cy6ergn0m-maven</id>
+                    <name>bintray-plugins</name>
+                    <url>http://dl.bintray.com/cy6ergn0m/maven</url>
+                </pluginRepository>
+            </pluginRepositories>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>cy.github</groupId>
+                        <artifactId>github-release-plugin</artifactId>
+                        <version>0.5.1</version>
+
+                        <configuration>
+                            <tagName>${project.artifactId}-${project.version}</tagName>
+                        </configuration>
+
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>gh-upload</goal>
+                                </goals>
+                                <phase>deploy</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
