@@ -19,6 +19,7 @@ public class ProfilesProperties {
 
     private double limitInMeters;
     private Destinations destinations;
+    private HealthCoordinates healthCoordinates;
 
     public double getLimitInMeters() {
 
@@ -61,12 +62,22 @@ public class ProfilesProperties {
         this.destinations = destinations;
     }
 
+
+    public HealthCoordinates getHealthCoordinates() {
+
+        return healthCoordinates;
+    }
+
+
+    public void setHealthCoordinates(HealthCoordinates healthCoordinates) {
+
+        this.healthCoordinates = healthCoordinates;
+    }
+
     public static class Destinations {
 
         private URL underLimit;
-
         private URL overLimit;
-
         private URL fallback;
 
         public URL getUnderLimit() {
@@ -102,6 +113,88 @@ public class ProfilesProperties {
         public void setFallback(URL fallback) {
 
             this.fallback = fallback;
+        }
+    }
+
+    public static class HealthCoordinates {
+
+        private Coordinates start;
+        private Coordinates end;
+
+        public Coordinates getStart() {
+
+            return start;
+        }
+
+
+        public void setStart(Coordinates start) {
+
+            this.start = start;
+        }
+
+
+        public double getStartLatitude() {
+
+            return start.getLatitude();
+        }
+
+
+        public double getStartLongitude() {
+
+            return start.getLongitude();
+        }
+
+
+        public Coordinates getEnd() {
+
+            return end;
+        }
+
+
+        public void setEnd(Coordinates end) {
+
+            this.end = end;
+        }
+
+
+        public double getEndLatitude() {
+
+            return end.getLatitude();
+        }
+
+
+        public double getEndLongitude() {
+
+            return end.getLongitude();
+        }
+    }
+
+    public static class Coordinates {
+
+        private double latitude;
+        private double longitude;
+
+        public double getLatitude() {
+
+            return latitude;
+        }
+
+
+        public void setLatitude(double latitude) {
+
+            this.latitude = latitude;
+        }
+
+
+        public double getLongitude() {
+
+            return longitude;
+        }
+
+
+        public void setLongitude(double longitude) {
+
+            this.longitude = longitude;
         }
     }
 }

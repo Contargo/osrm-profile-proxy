@@ -49,6 +49,14 @@ profiles:
       fallback: http://localhost:5001
 ```
 
+## Health check
+
+The application provides a health check at `/health`. That check performs a
+routing with all osrm services configured under `profiles.destinations`.It will
+report `UP` if all osrm services are up, and `DOWN` otherwise. The routing can
+be influenced with the `start` and `end` parameters under
+`profiles.healthCoordinates`.
+
 ## Development
 
 To project is built with maven:
