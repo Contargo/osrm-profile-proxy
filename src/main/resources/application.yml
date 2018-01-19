@@ -10,7 +10,19 @@ profiles:
       underLimit: http://localhost:50001/mapsUnderLimit
       overLimit: http://localhost:50001/mapsOverLimit
       fallback: http://localhost:50001/mapsFallback
+  healthCoordinates:
+    start: #Berlin
+      latitude: 52.517037
+      longitude: 13.388860
+    end: #Karlsruhe
+      latitude: 49.014068
+      longitude: 8.404437
 
 spring:
   profiles:
     active: dev
+
+endpoints:
+  enabled: false
+  health:
+    enabled: true

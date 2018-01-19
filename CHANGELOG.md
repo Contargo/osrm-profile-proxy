@@ -1,3 +1,7 @@
-## 1.0.0 (2018-01-08)
+## 1.1
+
+- Add health check
+
+## 1.0
 
 - Initial setup of proxy.
