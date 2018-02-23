@@ -1,11 +1,14 @@
 package net.contargo.osrmproxy.service;
 
+import org.geotools.referencing.GeodeticCalculator;
+
+
 /**
  * Provides aerial distance calculation.
  *
  * @author  Ben Antony - antony@synyx.de
  */
-public interface AerialDistanceCalculationService {
+public class AerialDistanceCalculation {
 
     /**
      * Calculates the aerial distance between two geographical points in meters.
@@ -17,5 +20,13 @@ public interface AerialDistanceCalculationService {
      *
      * @return  The distance between origin and destination, in meters
      */
-    double calculateAerialDistanceInMeters(double longitudeA, double latitudeA, double longitudeB, double latitudeB);
+    public static double calculateAerialDistanceInMeters(double longitudeA, double latitudeA, double longitudeB,
+        double latitudeB) {
+
+        GeodeticCalculator calculator = new GeodeticCalculator();
+        calculator.setStartingGeographicPoint(longitudeA, latitudeA);
+        calculator.setDestinationGeographicPoint(longitudeB, latitudeB);
+
+        return calculator.getOrthodromicDistance();
+    }
 }

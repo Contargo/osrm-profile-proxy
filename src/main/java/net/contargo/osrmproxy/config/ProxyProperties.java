@@ -4,64 +4,22 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import org.springframework.stereotype.Component;
 
-import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
- * Properties for everything that is configured under "profiles" in the application.yml.
+ * Root properties to configure the osrm-profile-proxy.
  *
- * @author  Ben Antony - antony@synyx.de
  * @author  Sandra Thieme - thieme@synyx.de
+ * @author  Ben Antony - antony@synyx.de
  */
 @Component
-@ConfigurationProperties("profiles")
-public class ProfilesProperties {
+@ConfigurationProperties("proxy")
+public class ProxyProperties {
 
-    private double limitInMeters;
-    private Destinations destinations;
+    private Profiles profiles;
     private HealthCoordinates healthCoordinates;
-
-    public double getLimitInMeters() {
-
-        return limitInMeters;
-    }
-
-
-    public void setLimitInMeters(int limitInMeters) {
-
-        this.limitInMeters = limitInMeters;
-    }
-
-
-    public Destinations getDestinations() {
-
-        return destinations;
-    }
-
-
-    public URL getDestinationUnderLimit() {
-
-        return destinations.getUnderLimit();
-    }
-
-
-    public URL getDestinationOverLimit() {
-
-        return destinations.getOverLimit();
-    }
-
-
-    public URL getFallbackDestination() {
-
-        return destinations.getFallback();
-    }
-
-
-    public void setDestinations(Destinations destinations) {
-
-        this.destinations = destinations;
-    }
-
 
     public HealthCoordinates getHealthCoordinates() {
 
@@ -74,43 +32,55 @@ public class ProfilesProperties {
         this.healthCoordinates = healthCoordinates;
     }
 
-    public static class Destinations {
 
-        private URL underLimit;
-        private URL overLimit;
-        private URL fallback;
+    public Profiles getProfiles() {
 
-        public URL getUnderLimit() {
+        return profiles;
+    }
 
-            return underLimit;
+
+    public void setProfiles(Profiles profiles) {
+
+        this.profiles = profiles;
+    }
+
+    public static class Profiles {
+
+        private Map<String, LimitProfileProperties> limit = new HashMap<>();
+        private Map<String, SimpleProfileProperties> simple = new HashMap<>();
+        private String fallback;
+
+        public Map<String, LimitProfileProperties> getLimit() {
+
+            return limit;
         }
 
 
-        public void setUnderLimit(URL underLimit) {
+        public void setLimit(Map<String, LimitProfileProperties> limit) {
 
-            this.underLimit = underLimit;
+            this.limit = limit;
         }
 
 
-        public URL getOverLimit() {
+        public Map<String, SimpleProfileProperties> getSimple() {
 
-            return overLimit;
+            return simple;
         }
 
 
-        public void setOverLimit(URL overLimit) {
+        public void setSimple(Map<String, SimpleProfileProperties> simple) {
 
-            this.overLimit = overLimit;
+            this.simple = simple;
         }
 
 
-        public URL getFallback() {
+        public String getFallback() {
 
             return fallback;
         }
 
 
-        public void setFallback(URL fallback) {
+        public void setFallback(String fallback) {
 
             this.fallback = fallback;
         }
