@@ -1,6 +1,12 @@
 package net.contargo.osrmproxy.health;
 
-import net.contargo.osrmproxy.config.ProfilesProperties;
+import net.contargo.osrmproxy.config.LimitProfileProperties;
+import net.contargo.osrmproxy.config.LimitProfileProperties.Destinations;
+import net.contargo.osrmproxy.config.ProxyProperties;
+import net.contargo.osrmproxy.config.ProxyProperties.Coordinates;
+import net.contargo.osrmproxy.config.ProxyProperties.HealthCoordinates;
+import net.contargo.osrmproxy.config.ProxyProperties.Profiles;
+import net.contargo.osrmproxy.config.SimpleProfileProperties;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +20,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,6 +38,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 /**
  * @author  Sandra Thieme - thieme@synyx.de
+ * @author  Ben Antony - antony@synyx.de
  */
 class OsrmHealthIndicatorTest {
 
@@ -38,23 +48,40 @@ class OsrmHealthIndicatorTest {
     @BeforeEach
     void setUp() throws MalformedURLException {
 
-        ProfilesProperties properties = new ProfilesProperties();
-
-        ProfilesProperties.Destinations destinations = new ProfilesProperties.Destinations();
+        Destinations destinations = new Destinations();
         destinations.setOverLimit(new URL("http://example.com:5000"));
         destinations.setUnderLimit(new URL("http://example.com:5001"));
-        destinations.setFallback(new URL("http://example.com:5002"));
-        properties.setDestinations(destinations);
+        destinations.setFallback(new URL("http://example.com:5000"));
 
-        ProfilesProperties.HealthCoordinates healthCoordinates = new ProfilesProperties.HealthCoordinates();
+        LimitProfileProperties limitProfileProperties = new LimitProfileProperties();
+        limitProfileProperties.setDestinations(destinations);
+        limitProfileProperties.setLimitInMeters(75000);
 
-        ProfilesProperties.Coordinates start = new ProfilesProperties.Coordinates();
+        SimpleProfileProperties simpleProfileProperties = new SimpleProfileProperties();
+        simpleProfileProperties.setDestination(new URL("http://example.com:5003"));
+
+        Profiles profiles = new Profiles();
+
+        Map<String, LimitProfileProperties> limitProfiles = new HashMap<>();
+        limitProfiles.put("driving", limitProfileProperties);
+        profiles.setLimit(limitProfiles);
+
+        Map<String, SimpleProfileProperties> simpleProfiles = new HashMap<>();
+        simpleProfiles.put("rail", simpleProfileProperties);
+        profiles.setSimple(simpleProfiles);
+
+        ProxyProperties properties = new ProxyProperties();
+        properties.setProfiles(profiles);
+
+        HealthCoordinates healthCoordinates = new HealthCoordinates();
+
+        Coordinates start = new Coordinates();
         start.setLatitude(52.517037);
         start.setLongitude(13.388860);
 
         healthCoordinates.setStart(start);
 
-        ProfilesProperties.Coordinates end = new ProfilesProperties.Coordinates();
+        Coordinates end = new Coordinates();
         end.setLatitude(49.014068);
         end.setLongitude(8.404437);
         healthCoordinates.setEnd(end);
@@ -71,13 +98,13 @@ class OsrmHealthIndicatorTest {
     @Test
     void goodHealth() {
 
-        serverMock.expect(requestTo("http://example.com:5000/route/v1/driving/13.388860,52.517037;8.404437,49.014068"))
+        serverMock.expect(requestTo("http://example.com:5003/route/v1/driving/13.388860,52.517037;8.404437,49.014068"))
             .andExpect(method(GET))
             .andRespond(withSuccess("{}", APPLICATION_JSON));
         serverMock.expect(requestTo("http://example.com:5001/route/v1/driving/13.388860,52.517037;8.404437,49.014068"))
             .andExpect(method(GET))
             .andRespond(withSuccess("{}", APPLICATION_JSON));
-        serverMock.expect(requestTo("http://example.com:5002/route/v1/driving/13.388860,52.517037;8.404437,49.014068"))
+        serverMock.expect(requestTo("http://example.com:5000/route/v1/driving/13.388860,52.517037;8.404437,49.014068"))
             .andExpect(method(GET))
             .andRespond(withSuccess("{}", APPLICATION_JSON));
 
@@ -89,15 +116,15 @@ class OsrmHealthIndicatorTest {
     @Test
     void badHealth() {
 
-        serverMock.expect(requestTo("http://example.com:5000/route/v1/driving/13.388860,52.517037;8.404437,49.014068"))
+        serverMock.expect(requestTo("http://example.com:5003/route/v1/driving/13.388860,52.517037;8.404437,49.014068"))
             .andExpect(method(GET))
-            .andRespond(withSuccess("{}", APPLICATION_JSON));
+            .andRespond(withServerError());
         serverMock.expect(requestTo("http://example.com:5001/route/v1/driving/13.388860,52.517037;8.404437,49.014068"))
             .andExpect(method(GET))
             .andRespond(withSuccess("{}", APPLICATION_JSON));
-        serverMock.expect(requestTo("http://example.com:5002/route/v1/driving/13.388860,52.517037;8.404437,49.014068"))
+        serverMock.expect(requestTo("http://example.com:5000/route/v1/driving/13.388860,52.517037;8.404437,49.014068"))
             .andExpect(method(GET))
-            .andRespond(withServerError());
+            .andRespond(withSuccess("{}", APPLICATION_JSON));
 
         Health health = sut.health();
         assertThat(health.getStatus()).isEqualTo(Status.DOWN);

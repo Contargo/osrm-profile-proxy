@@ -1,6 +1,15 @@
-profiles:
-  limitInMeters: 75000
-  destinations:
-      underLimit: http://localhost:50002/mapsUnderLimit
-      overLimit: http://localhost:50002/mapsOverLimit
-      fallback: http://localhost:50002/mapsFallback
+proxy:
+  profiles:
+    fallback: driving
+    limit:
+      driving:
+        limitInMeters: 75000
+        destinations:
+          underLimit: http://localhost:50002/mapsUnderLimit
+          overLimit: http://localhost:50002/mapsOverLimit
+          fallback: http://localhost:50002/mapsFallback
+    simple:
+      rail:
+        destination: http://localhost:50002/mapsRail
+      water:
+        destination: http://localhost:50002/mapsWater

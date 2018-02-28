@@ -4,12 +4,7 @@ zuul:
       path: /osrm/**
   removeSemicolonContent: false
 
-profiles:
-  limitInMeters: 75000
-  destinations:
-      underLimit: http://localhost:50001/mapsUnderLimit
-      overLimit: http://localhost:50001/mapsOverLimit
-      fallback: http://localhost:50001/mapsFallback
+proxy:
   healthCoordinates:
     start: #Berlin
       latitude: 52.517037
