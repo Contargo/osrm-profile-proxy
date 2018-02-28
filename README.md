@@ -49,7 +49,7 @@ proxy:
       longitude: 8.404437
 ```
 
-##How a simple proxy works
+## How a simple proxy works
 This is an example OSRM routing request to an OSRM instance on port 8080 with
 profile `rail`:
 http://maps.example.com:8080/osrm/route/v1/rail/10.415039,50.148746;8.525391,52.829321?overview=false&alternatives=true&steps=true

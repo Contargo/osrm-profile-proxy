@@ -1,4 +1,4 @@
-## 1.2-SNAPSHOT
+## 1.2
 
 - Add multiple profile support:
     - Two proxy types `simple` and `limit`
