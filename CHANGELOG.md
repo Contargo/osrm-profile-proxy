@@ -1,3 +1,7 @@
+## 1.3
+
+- Dependency update
+
 ## 1.2
 
 - Add multiple profile support:
@@ -10,4 +14,4 @@
 
 ## 1.0
 
-- Initial setup of proxy.
+- Initial setup of proxy
