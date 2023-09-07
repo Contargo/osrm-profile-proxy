@@ -15,7 +15,7 @@ proxy:
 
 spring:
   profiles:
-    active: dev
+    default: dev
 
 endpoints:
   enabled: false
