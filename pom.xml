@@ -51,17 +51,6 @@
         <tag>HEAD</tag>
     </scm>
 
-    <distributionManagement>
-        <repository>
-            <id>contargo-oss</id>
-            <url>https://nexus.contargo.net/content/repositories/oss-releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>contargo-oss</id>
-            <url>https://nexus.contargo.net/content/repositories/oss-snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <dependencies>
 
         <dependency>
